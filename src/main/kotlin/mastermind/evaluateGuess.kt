@@ -1,34 +1,26 @@
 package mastermind
 
+import java.util.*
+
 data class Evaluation(val rightPosition: Int, val wrongPosition: Int)
 
 fun evaluateGuess(secretWord: Word, guess: String): Evaluation {
     var rightPosition = 0
     var wrongPosition = 0
 
-    val guessWord = guess.toUpperCase()
+    val guessWord = guess.uppercase(Locale.getDefault())
     val filterWord = secretWord.normalize()
     val word = secretWord.word
 
     val result = arrayOfNulls<String>(filterWord.length)
-
     val secretMissing = mutableListOf<Char>()
     val wrongGuess = arrayOfNulls<Char>(filterWord.length)
 
-    val charSecretList = filterWord.toUpperCase().toList()
-
-//    val zip = secret.zip(guess);
-//    val rightPositions = zip.count { pair ->
-//        pair.first == pair.second
-//    }
-//
-//    val commonLetters = "ABCDEF".sumBy { ch ->
-//        Math.min(secret.count { c -> c == ch }, guess.count { c -> c == ch })
-//    }
+    val charSecretList = filterWord.uppercase(Locale.getDefault()).toList()
 
     guessWord.toList().forEachIndexed { index, guessChar ->
         if (charSecretList[index] == guessChar) {
-            result[index] = word[index].toUpperCase().green()
+            result[index] = word[index].uppercaseChar().green()
             rightPosition++
         } else {
             secretMissing.add(charSecretList[index])
@@ -40,11 +32,11 @@ fun evaluateGuess(secretWord: Word, guess: String): Evaluation {
         if (char != null) {
             val wrongIndex = secretMissing.indexOf(char)
             if (wrongIndex > -1) {
-                result[index] = char.toUpperCase().yellow()
+                result[index] = char.uppercaseChar().yellow()
                 secretMissing.removeAt(wrongIndex)
                 wrongPosition++
             } else {
-                result[index] = char.toUpperCase().toString()
+                result[index] = char.uppercaseChar().toString()
             }
         }
     }
