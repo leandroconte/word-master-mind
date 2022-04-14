@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  word-master-mind-app:
+    image: "word-app-netty"
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: '0.5'
+#          memory: 100M
+    environment:
+      - DATABASE_CONNECTION_URL=jdbc:postgresql://45.63.3.134:5432/postgres?user=postgres&password=mysecretpassword
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    networks:
+      - local
+  postgres:
+    image: "postgres-master-mind:latest"
+    ports:
+      - "5432:5432"
+    networks:
+      - local
+
+networks:
+  local:
